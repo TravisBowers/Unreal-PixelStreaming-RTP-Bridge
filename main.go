@@ -324,15 +324,15 @@ func setupMediaForwarding(peerConnection *webrtc.PeerConnection) (*udpConn, *udp
 			log.Println(fmt.Sprintf("Unsupported track type from Unreal Engine, track type: %s", trackType))
 		}
 
-		// Send a PLI on an interval so that the publisher is pushing a keyframe every rtcpPLIInterval
-		go func() {
-			ticker := time.NewTicker(time.Second * 2)
-			for range ticker.C {
-				if rtcpErr := peerConnection.WriteRTCP([]rtcp.Packet{&rtcp.PictureLossIndication{MediaSSRC: uint32(track.SSRC())}}); rtcpErr != nil {
-					fmt.Println(rtcpErr)
-				}
-			}
-		}()
+		// // Send a PLI on an interval so that the publisher is pushing a keyframe every rtcpPLIInterval
+		// go func() {
+		// 	ticker := time.NewTicker(time.Second * 2)
+		// 	for range ticker.C {
+		// 		if rtcpErr := peerConnection.WriteRTCP([]rtcp.Packet{&rtcp.PictureLossIndication{MediaSSRC: uint32(track.SSRC())}}); rtcpErr != nil {
+		// 			fmt.Println(rtcpErr)
+		// 		}
+		// 	}
+		// }()
 
 		b := make([]byte, 1500)
 		rtpPacket := &rtp.Packet{}
